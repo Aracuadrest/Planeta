@@ -1,5 +1,7 @@
 package clases;
 
+import java.util.Objects;
+
 public class Planeta {
 	
 	private String nombre;
@@ -11,10 +13,11 @@ public class Planeta {
 	private String tipo_planeta;
 	private boolean observable;
 	
+	public static final int UA=149597870;
 	
 	// Constructor sin parámetros
 	public Planeta() {
-		this.nombre = "";
+		this.nombre = null;
 		this.cantidad_satelites = 0;
 		this.masa_kg = 0;
 		this.volumen = 0;
@@ -55,11 +58,24 @@ public class Planeta {
 		 * }
 		 * 	this.tipo=compruebaTipo(tipo);
 		 */
+	
+	public Planeta(String nombre, int cantidad_satelites, double masa_kg, double volumen, int diametro,
+			int distancia_media_Sol, String tipo) {
+		super();
+		this.nombre = nombre;
+		this.cantidad_satelites = cantidad_satelites;
+		this.masa_kg = masa_kg;
+		this.volumen = volumen;
+		this.diametro = diametro;
+		this.distancia_media_Sol = distancia_media_Sol;
+		this.tipo_planeta=compruebaTipo(tipo);
+	}
+		
+		
 	// Método para comprobar tipo
 	public String compruebaTipo(String tipo) {
-		this.tipo_planeta=tipo;
-		if (this.tipo_planeta.equals("GASEOSO") || this.tipo_planeta.equals("TERRESTRE") || this.tipo_planeta.equals("ENANO")) {
-			return tipo;
+		if (tipo.equals("GASEOSO") ||  tipo.equals("ENANO")) {
+			return tipo.toUpperCase();
 		}else {
 			return "TERRESTRE";
 		}
@@ -141,15 +157,35 @@ public class Planeta {
 		public double densidadPlaneta() {
 			return this.masa_kg/this.volumen;
 		}
+	
 		
 	// Método si un planeta es exterior.
 		public boolean esExterior() {
-			double exterior = 3.4*149597870;
-			if (this.distancia_media_Sol*1000000>(int)exterior) {
+			double distanciaUA = this.distancia_media_Sol/(UA/10000000.0);
+			if (distanciaUA>3.4) {
 				return true;
 			}
 			return false;
 		}
+		
+		// Método equals
+		@Override
+		public int hashCode() {
+			return Objects.hash(nombre);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Planeta other = (Planeta) obj;
+			return Objects.equals(nombre, other.nombre);
+		}
+		
+	
 		
 	
 	
